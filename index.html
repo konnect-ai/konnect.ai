@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KONNECT.AI - Intelligence Artificielle & Automatisation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #00d4ff;
+            --secondary-blue: #0099cc;
+            --dark-blue: #001122;
+            --bg-dark: #0a0a0a;
+            --text-light: #ffffff;
+            --text-gray: #cccccc;
+            --accent-cyan: #00ffff;
+            --glass-bg: rgba(0, 212, 255, 0.1);
+            --glass-border: rgba(0, 212, 255, 0.3);
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Particles Background */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a0a 0%, #001122 50%, #000033 100%);
+        }
+
+        /* Logo Background */
+        .logo-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60vw;
+            height: 60vw;
+            max-width: 800px;
+            max-height: 800px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%2300d4ff;stop-opacity:0.1"/><stop offset="100%" style="stop-color:%2300ffff;stop-opacity:0.05"/></linearGradient></defs><g fill="none" stroke="url(%23brainGrad)" stroke-width="3"><path d="M200 80c-30 0-55 20-65 47-15-5-32 2-42 18-8 12-8 28 0 40 10 16 27 23 42 18 10 27 35 47 65 47s55-20 65-47c15 5 32-2 42-18 8-12 8-28 0-40-10-16-27-23-42-18-10-27-35-47-65-47z"/><circle cx="180" cy="160" r="8" fill="%2300d4ff" opacity="0.6"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/></circle><circle cx="220" cy="160" r="8" fill="%2300ffff" opacity="0.6"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/></circle><path d="M165 180h70" stroke="%2300d4ff" stroke-width="2" opacity="0.7"/><rect x="170" y="200" width="60" height="30" rx="5" fill="%2300d4ff" opacity="0.2"/><text x="200" y="220" text-anchor="middle" fill="%2300d4ff" font-family="Rajdhani" font-size="14" font-weight="bold">IA</text><g stroke="%2300ffff" stroke-width="2" opacity="0.4"><line x1="140" y1="120" x2="160" y2="140"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" repeatCount="indefinite"/></line><line x1="260" y1="120" x2="240" y2="140"><animate attributeName="opacity" values="0.6;0.2;0.6" dur="3s" repeatCount="indefinite"/></line><line x1="200" y1="100" x2="200" y2="80"><animate attributeName="opacity" values="0.4;0.8;0.4" dur="2.5s" repeatCount="indefinite"/></line><line x1="120" y1="180" x2="100" y2="180"><animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite"/></line><line x1="280" y1="180" x2="300" y2="180"><animate attributeName="opacity" values="0.7;0.3;0.7" dur="4s" repeatCount="indefinite"/></line></g><circle cx="120" cy="140" r="4" fill="%2300ffff" opacity="0.5"><animate attributeName="r" values="2;6;2" dur="3s" repeatCount="indefinite"/></circle><circle cx="280" cy="140" r="4" fill="%2300ffff" opacity="0.5"><animate attributeName="r" values="6;2;6" dur="3s" repeatCount="indefinite"/></circle><circle cx="200" cy="260" r="4" fill="%2300d4ff" opacity="0.5"><animate attributeName="r" values="3;7;3" dur="2s" repeatCount="indefinite"/></circle></g></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.15;
+            z-index: -2;
+            animation: logo-pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes logo-pulse {
+            0%, 100% { 
+                opacity: 0.1; 
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% { 
+                opacity: 0.2; 
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-shadow: 0 0 20px var(--primary-blue);
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from { text-shadow: 0 0 20px var(--primary-blue); }
+            to { text-shadow: 0 0 30px var(--primary-blue), 0 0 40px var(--accent-cyan); }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+            text-shadow: 0 0 10px var(--primary-blue);
+        }
+
+        .nav-links a.active::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-cyan));
+            animation: slide-in 0.5s ease;
+        }
+
+        @keyframes slide-in {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            padding: 100px 0 50px;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            color: var(--text-gray);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.5);
+            border-color: var(--accent-cyan);
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-blue);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .service-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            animation: rotate-y 2s infinite linear;
+        }
+
+        @keyframes rotate-y {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-blue);
+        }
+
+        /* Commandements Grid */
+        .commandements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .commandement-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .commandement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .commandement-card:hover::before {
+            left: 100%;
+        }
+
+        .commandement-card:hover {
+            border-color: var(--primary-blue);
+            transform: scale(1.05);
+        }
+
+        .commandement-emoji {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .commandement-card h4 {
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: start;
+                align-items: center;
+                padding-top: 2rem;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--primary-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Logo Background -->
+    <div class="logo-background"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">KONNECT.AI</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-section="accueil">Accueil</a></li>
+                <li><a href="#" class="nav-link" data-section="presentation">Présentation</a></li>
+                <li><a href="#" class="nav-link" data-section="contact">Contact</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Accueil Section -->
+    <section id="accueil" class="section active">
+        <div class="hero">
+            <div class="hero-content fade-in">
+                <h1>KONNECT.AI</h1>
+                <p>L'intelligence artificielle au service de votre automatisation. Transformez vos processus métier en workflows intelligents et libérez le potentiel de votre entreprise.</p>
+                <a href="#" class="cta-button nav-link" data-section="presentation">Découvrir nos services</a>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="services-grid">
+                <div class="glass-card service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Diagnostic IA</h3>
+                    <p>Audit complet de vos tâches répétitives et identification des opportunités d'automatisation pour maximiser votre productivité.</p>
+                </div>
+                
+                <div class="glass-card service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Mise en place IA</h3>
+                    <p>Développement et déploiement d'automatisations personnalisées sans code, adaptées à vos besoins spécifiques.</p>
+                </div>
+                
+                <div class="glass-card service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>IA TPE/PME</h3>
+                    <p>Solutions intelligentes adaptées aux petites entreprises : CRM automatisé, gestion comptable, relances clients, reporting automatique.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Présentation Section -->
+    <section id="presentation" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Notre Écosystème IA</h2>
+            <p class="section-subtitle fade-in">
+                KONNECT.AI déploie un système d'intelligence artificielle distribué, organisé en commandements spécialisés 
+                pour une automatisation complète de vos processus métier. De l'auto-entrepreneur à la PME de 50 salariés.
+            </p>
+            
+            <div class="glass-card fade-in">
+                <h3 style="color: var(--primary-blue); margin-bottom: 2rem; text-align: center;">
+                    <i class="fas fa-brain"></i> Architecture Multi-Agents
+                </h3>
+                <p style="text-align: center; font-size: 1.1rem; line-height: 1.8;">
+                    Notre approche révolutionnaire combine 12 agents IA spécialisés qui collaborent en temps réel 
+                    pour automatiser, superviser et optimiser l'ensemble de vos opérations. Que vous soyez auto-entrepreneur, 
+                    TPE ou PME, chaque agent maîtrise son domaine d'expertise tout en communiquant avec les autres pour une coordination parfaite.
+                </p>
+            </div>
+
+            <div class="commandements-grid">
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">🪖</span>
+                    <h4>SENTINEL</h4>
+                    <p>Supervision & Coordination générale</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">🎨</span>
+                    <h4>PIXEL</h4>
+                    <p>Design & Identité visuelle</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">🤖</span>
+                    <h4>AUTOMATE</h4>
+                    <p>IA & Automatisations avancées</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">🛡️</span>
+                    <h4>FIREWALL</h4>
+                    <p>Sécurité & Conformité RGPD</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">💰</span>
+                    <h4>MIDAS</h4>
+                    <p>Commercial & Développement</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">📢</span>
+                    <h4>VIRAL</h4>
+                    <p>Marketing & Communication</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">💶</span>
+                    <h4>PICSOU</h4>
+                    <p>Finance & Comptabilité</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">🤝</span>
+                    <h4>CONTACT</h4>
+                    <p>Relation Client automatisée</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">🎓</span>
+                    <h4>MARIUS</h4>
+                    <p>Formation & Pédagogie</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">🧭</span>
+                    <h4>COACH</h4>
+                    <p>Stratégie & Organisation</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">✅</span>
+                    <h4>QUALITO</h4>
+                    <p>Contrôle Qualité</p>
+                </div>
+                
+                <div class="commandement-card fade-in">
+                    <span class="commandement-emoji">⚖️</span>
+                    <h4>JUGEOTE</h4>
+                    <p>Juridique & Conformité</p>
+                </div>
+            </div>
+
+            <div class="glass-card fade-in">
+                <h3 style="color: var(--primary-blue); margin-bottom: 2rem; text-align: center;">
+                    <i class="fas fa-rocket"></i> Notre Différence
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <div style="text-align: center;">
+                        <i class="fas fa-code" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;"></i>
+                        <h4 style="color: var(--primary-blue); margin-bottom: 1rem;">Sans Code</h4>
+                        <p>Automatisations puissantes sans compétences techniques requises</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <i class="fas fa-clock" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;"></i>
+                        <h4 style="color: var(--primary-blue); margin-bottom: 1rem;">24/7</h4>
+                        <p>Surveillance et exécution continues de vos processus</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;"></i>
+                        <h4 style="color: var(--primary-blue); margin-bottom: 1rem;">Évolutif</h4>
+                        <p>Solutions qui s'adaptent et grandissent avec votre business</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title fade-in">Connectons-nous</h2>
+            <p class="section-subtitle fade-in">
+                Prêt à transformer votre activité avec l'intelligence artificielle ? 
+                Contactez-nous pour un diagnostic gratuit de vos besoins en automatisation.
+            </p>
+            
+            <div class="glass-card fade-in">
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Nom / Entreprise</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="type">Type d'activité</label>
+                        <input type="text" id="type" name="type" placeholder="Ex: Auto-entrepreneur, TPE, PME...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Décrivez vos besoins en automatisation</label>
+                        <textarea id="message" name="message" placeholder="Quelles tâches répétitives souhaitez-vous automatiser ? Quels sont vos principaux défis organisationnels ?" required></textarea>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <button type="submit" class="cta-button">
+                            <i class="fas fa-paper-plane"></i> Demander un diagnostic gratuit
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <div class="glass-card fade-in" style="text-align: center;">
+                    <i class="fas fa-envelope" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Email</h3>
+                    <p>contact@konnect.ai</p>
+                </div>
+                
+                <div class="glass-card fade-in" style="text-align: center;">
+                    <i class="fab fa-discord" style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--primary-blue); margin-bottom: 1rem;">Discord QG</h3>
+                    <p>Rejoignez notre serveur pour un suivi en temps réel</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Particles.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // Particles Configuration
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 100,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": ["#00d4ff", "#0099cc", "#00ffff"]
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.6,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 2,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#00d4ff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinksContainer = document.querySelector('.nav-links');
+
+            // Navigation between sections
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetSection = this.dataset.section;
+                    
+                    // Remove active class from all links and sections
+                    navLinks.forEach(nl => nl.classList.remove('active'));
+                    sections.forEach(section => section.classList.remove('active'));
+                    
+                    // Add active class to clicked link and corresponding section
+                    this.classList.add('active');
+                    document.getElementById(targetSection).classList.add('active');
+                    
+                    // Close mobile menu if open
+                    navLinksContainer.classList.remove('active');
+                });
+            });
+
+            // Mobile menu toggle
+            mobileMenu.addEventListener('click', function() {
+                navLinksContainer.classList.toggle('active');
+            });
+
+            // Contact form submission
+            const contactForm = document.querySelector('.contact-form');
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(this);
+                const name = formData.get('name');
+                const email = formData.get('email');
+                const type = formData.get('type');
+                const message = formData.get('message');
+                
+                // Simple validation
+                if (!name || !email || !message) {
+                    alert('Veuillez remplir tous les champs obligatoires.');
+                    return;
+                }
+                
+                // Success animation (you can replace this with actual form submission)
+                const submit
